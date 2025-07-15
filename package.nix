@@ -41,9 +41,7 @@
     aarch64-linux = "linux-aarch64";
   };
 
-  firefoxPolicies =
-    (config.firefox.policies or {})
-    // policies;
+  firefoxPolicies = (config.firefox.policies or {}) // policies;
 
   policiesJson = writeText "firefox-policies.json" (builtins.toJSON {policies = firefoxPolicies;});
 
@@ -83,9 +81,9 @@ in
 
     preFixup = ''
       gappsWrapperArgs+=(
-        --add-flags "--name=''${MOZ_APP_LAUNCHER:-${binaryName}}"
-      )
-    '';
+        --add-flags "--name=''${MOZ_APP_LAUNCHER:-${binaryName}}--persist=${
+        config.zen-browser.configPath ? ".zen"
+      })'';
 
     installPhase = ''
       mkdir -p "$prefix/lib/${libName}"

@@ -19,10 +19,12 @@
 
     forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
   in {
-    packages = forAllSystems (system:
-      import ./default.nix {
-        pkgs = nixpkgs.legacyPackages.${system};
-      });
+    packages = forAllSystems (
+      system:
+        import ./default.nix {
+          pkgs = nixpkgs.legacyPackages.${system};
+        }
+    );
 
     formatter = forAllSystems (
       system: let
