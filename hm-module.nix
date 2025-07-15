@@ -2,12 +2,14 @@
   home-manager,
   self,
   name,
-}: {
+}:
+{
   config,
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   applicationName = "Zen Browser";
   modulePath = [
     "programs"
@@ -15,7 +17,8 @@
   ];
 
   mkFirefoxModule = import "${home-manager.outPath}/modules/programs/firefox/mkFirefoxModule.nix";
-in {
+in
+{
   imports = [
     (mkFirefoxModule {
       inherit modulePath;
@@ -25,8 +28,8 @@ in {
       visible = true;
       platforms = {
         linux = {
-          vendorPath = ".zen";
-          configPath = ".zen";
+          vendorPath = config.programs.zen-browser.configPath;
+          configPath = config.programs.zen-browser.configPath;
         };
         darwin = {
           configPath = "Library/Application Support/Zen";
@@ -41,7 +44,7 @@ in {
         # Seems like zen uses relative (to the original binary) path to the policies.json file
         # and ignores the overrides by pkgs.wrapFirefox
         policies = config.programs.zen-browser.policies;
-      }) {};
+      }) { };
       # This does not work, the package can't build using these policies
       policies = lib.mkDefault {
         DisableAppUpdate = true;
